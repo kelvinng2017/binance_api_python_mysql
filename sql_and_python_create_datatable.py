@@ -1,6 +1,8 @@
 # %%
 import pymysql
 import configparser
+import time
+from datetime import datetime
 config = configparser.ConfigParser()
 config.read('D:\config_file\python_mysql_binance\config.ini')
 config.sections()
@@ -15,18 +17,26 @@ db_settings = {
     "db": config['database_settings']['db'],
     "charset": config['database_settings']['charset']
 }
+db_settings_for_high_hand = {
+    "host": config['database_settings']['host'],
+    "port": int(config['database_settings']['port']),
+    "user": config['database_settings']['user'],
+    "password": config['database_settings']['password'],
+    "db": config['database_settings']['db_high_hand'],
+    "charset": config['database_settings']['charset']
+}
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings)
+    conn = pymysql.connect(**db_settings_for_high_hand)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 刪除資料表指令
-        command = "DROP TABLE symbol_data_table"
+        command = "DROP TABLE  `%s`"
 
         # 執行指令
-        cursor.execute(command)
+        cursor.execute(command, ('2021-07-28 16:22:22'))
 
         print("刪除資料表成功")
         conn.close()
@@ -37,17 +47,65 @@ except Exception as ex:
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings)
+    conn = pymysql.connect(**db_settings_for_high_hand)
+
+    # 建立Cursor物件
+    with conn.cursor() as cursor:
+        # 刪除資料表指令
+        show_table_sql = "SHOW TABLES"
+
+        # 執行指令
+        cursor.execute(show_table_sql)
+        result_for_all = cursor.fetchall()
+
+        print(result_for_all)
+        conn.close()
+except Exception as ex:
+    print(ex)
+
+# %%
+eval(result_for_all[1][0])
+
+# %%
+try:
+    # 建立Connection物件
+    conn = pymysql.connect(**db_settings_for_high_hand)
+
+    # 建立Cursor物件
+    with conn.cursor() as cursor:
+        # 刪除資料表指令
+        command = "DROP TABLE  `%s`"
+
+        # 執行指令
+        for result_for_all_index in range(len(result_for_all)):
+            cursor.execute(command, (eval(result_for_all[result_for_all_index][0])
+                                     ))
+
+        print("刪除資料表成功")
+        conn.close()
+except Exception as ex:
+    print(ex)
+
+# %%
+abc = "apple"
+now = datetime.now()
+
+# %%
+datetime.now().microsecond
+# %%
+try:
+    # 建立Connection物件
+    conn = pymysql.connect(**db_settings_for_high_hand)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 建立資料表指令
-        command = "CREATE TABLE symbol_data_table(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,PRIMARY KEY(symbol_id));"
-
-        # 執行指令
-        cursor.execute(command)
-
-        print("建立資料表成功")
+        for i in range(5):
+            sql = "create  table `%s`(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,high_hand_time VARCHAR(100) NOT NULL ,PRIMARY KEY(symbol_id))"
+            cursor.execute(sql, ["table"+str(datetime.now().year)+"-"+str(datetime.now().month)+"-" +
+                                 str(datetime.now().day)+" "+str(datetime.now().hour)+":"+str(datetime.now().minute)+":"+str(datetime.now().second)+"."+str(datetime.now().microsecond)])
+        conn.commit()
+        print("sql")
         conn.close()
 except Exception as ex:
     print(ex)
@@ -66,6 +124,27 @@ try:
         cursor.execute(command)
 
         print("修改資料表名稱成功")
+        conn.close()
+except Exception as ex:
+    print(ex)
+
+# %%
+now_time = time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime())
+print(now_time)
+# %%
+try:
+    # 建立Connection物件
+    conn = pymysql.connect(**db_settings_for_high_hand)
+
+    # 建立Cursor物件
+    with conn.cursor() as cursor:
+        # 建立資料表指令
+        command_create_datatable = "create  table %s(id Int(5),name VARCHAR(16))"
+
+        # 執行指令
+        cursor.execute(command_create_datatable, (now_time))
+
+        print("建立資料表成功")
         conn.close()
 except Exception as ex:
     print(ex)

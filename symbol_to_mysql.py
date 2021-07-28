@@ -91,7 +91,7 @@ need_usdt_price_symbol_numpy_out[len(
 # %%
 # 將需要的幣名稱存在mysql上
 # 批量新增
-""""
+
 try:
     # 建立Connection物件
     conn = pymysql.connect(**db_settings)
@@ -110,9 +110,10 @@ try:
         conn.close()
 except Exception as ex:
     print(ex)
-"""
+
 # %%
 # 單筆新增
+"""
 try:
     # 建立Connection物件
     conn = pymysql.connect(**db_settings)
@@ -130,6 +131,7 @@ try:
         conn.close()
 except Exception as ex:
     print(ex)
+"""
 # %%
 # 查詢全部小幣的名稱
 try:
@@ -147,7 +149,7 @@ try:
         # 取得所有資料
         result_for_all = cursor.fetchall()
 
-        print("新增資料成功")
+        print("查詢全部資料成功")
         conn.close()
 except Exception as ex:
     print(ex)
@@ -172,7 +174,7 @@ try:
         # 取得第一筆資料
         result_for_one = cursor.fetchone()
 
-        print("新增資料成功")
+        print("查詢單筆資料成功")
         conn.close()
 except Exception as ex:
     print(ex)
@@ -197,7 +199,7 @@ try:
         # 取得第一筆資料
         result_for_many = cursor.fetchmany(5)
 
-        print("新增資料成功")
+        print("查詢多筆資料成功")
         conn.close()
 except Exception as ex:
     print(ex)
@@ -221,7 +223,7 @@ try:
         # 取得第一筆資料
         result_for_where = cursor.fetchall()
 
-        print("新增資料成功")
+        print("條件查詢全部資料成功")
         conn.close()
 except Exception as ex:
     print(ex)
@@ -245,7 +247,7 @@ try:
         # 儲存變更
         conn.commit()
 
-        print("修改資料成功")  # 22
+        print("修改資料成功")
         conn.close()
 except Exception as ex:
     print(ex)

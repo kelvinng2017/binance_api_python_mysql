@@ -12,18 +12,26 @@ db_settings = {
     "port": int(config['database_settings']['port']),
     "user": config['database_settings']['user'],
     "password": config['database_settings']['password'],
-    "db": config['database_settings']['db'],
+    "charset": config['database_settings']['charset']
+}
+
+# %%
+db_settings_for_high_hand = {
+    "host": config['database_settings']['host'],
+    "port": int(config['database_settings']['port']),
+    "user": config['database_settings']['user'],
+    "password": config['database_settings']['password'],
     "charset": config['database_settings']['charset']
 }
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings)
+    conn = pymysql.connect(**db_settings_for_high_hand)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 刪除資料表指令
-        command = "create database binance_database"
+        command = "create database high_hand_database"
 
         # 執行指令
         cursor.execute(command)
