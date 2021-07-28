@@ -1,9 +1,9 @@
 # %%
 import pymysql
-import datetime
+
 import time
 import requests
-
+from datetime import datetime
 # import time
 # import dataframe_image as dfi
 import pandas as pd
@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import mpl_finance as mpf
 import configparser
 pd.set_option('expand_frame_repr', False)
-starttime = datetime.datetime.now()
+starttime = datetime.now()
 # %%
 config = configparser.ConfigParser()
 config.read('D:\config_file\python_mysql_binance\config.ini')
@@ -78,17 +78,13 @@ for symbol_index in range(len(result_for_all)):
     high_hand_dict[result_for_all[symbol_index][0]] = resp.json()[-1]['time'] - \
         resp.json()[0]['time']
 
-# %%
 hig_hand_tuple = sorted(high_hand_dict.items(),
                         key=lambda d: d[1], reverse=False)[0:10]
 
-# %%
-hig_hand_tuple[1][1]
-# %%
-now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-# %%
-now_time
-# %%
+# hig_hand_tuple
+now_time = str(datetime.now().year)+"-"+str(datetime.now().month)+"-" + str(datetime.now().day)+" "+str(
+    datetime.now().hour)+":"+str(datetime.now().minute)+":"+str(datetime.now().second)+"."+str(datetime.now().microsecond)
+# now_time
 try:
     # 建立Connection物件
     conn = pymysql.connect(**db_settings_for_high_hand)
@@ -96,21 +92,19 @@ try:
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 建立資料表指令
-        command_create_datatable = "CREATE TABLE " + now_time + \
-            "(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,high_hand_time VARCHAR(100) NOT NULL ,PRIMARY KEY(symbol_id));"
+        command_create_datatable = "CREATE TABLE `%s`(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,high_hand_time VARCHAR(100) NOT NULL,rsi6 VARCHAR(10) ,PRIMARY KEY(symbol_id))"
 
         # 執行指令
-        cursor.execute(command_create_datatable)
+        cursor.execute(command_create_datatable, [now_time])
 
-        command_insert_data = "INSERT INTO " + \
-            now_time + "(symbol_name,high_hand_time)VALUES(%s,%s)"
+        command_insert_data = "INSERT INTO `%s`(symbol_name,high_hand_time)VALUES(%s,%s)"
 
         for hig_hand_tuple_index in range(len(hig_hand_tuple)):
             print(hig_hand_tuple[hig_hand_tuple_index][0] +
-                  ","+hig_hand_tuple[hig_hand_tuple_index][1])
-            cursor.execute(command_create_datatable,
-                           (hig_hand_tuple[hig_hand_tuple_index][0], hig_hand_tuple[hig_hand_tuple_index][1]))
-
+                  ","+str(hig_hand_tuple[hig_hand_tuple_index][1]))
+            cursor.execute(command_insert_data,
+                           [now_time, hig_hand_tuple[hig_hand_tuple_index][0], str(hig_hand_tuple[hig_hand_tuple_index][1])])
+        conn.commit()
         print("建立資料表成功")
         conn.close()
 except Exception as ex:
