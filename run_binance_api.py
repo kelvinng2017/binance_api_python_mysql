@@ -1,4 +1,4 @@
-# %%
+
 import pymysql
 
 import time
@@ -16,11 +16,11 @@ import mpl_finance as mpf
 import configparser
 pd.set_option('expand_frame_repr', False)
 starttime = datetime.now()
-# %%
+
 config = configparser.ConfigParser()
 config.read('D:\config_file\python_mysql_binance\config.ini')
 config.sections()
-# %%
+
 # 資料庫設定
 db_settings = {
     "host": config['database_settings']['host'],
@@ -46,7 +46,7 @@ db_settings_for_high_hand_table_name = {
     "db": config['database_settings']['db_high_hand_table_name'],
     "charset": config['database_settings']['charset']
 }
-# %%
+
 try:
     # 建立Connection物件
     conn = pymysql.connect(**db_settings)
@@ -66,12 +66,12 @@ try:
         conn.close()
 except Exception as ex:
     print(ex)
-# %%
+
 result_for_all
 
-# %%
+
 result_for_all[1][0]
-# %%
+
 
 while(datetime.now().minute <= 61):
     now_time_new = str(datetime.now().year)+"-"+str(datetime.now().month)+"-" + str(datetime.now().day)+" "+str(
@@ -217,9 +217,3 @@ while(datetime.now().minute <= 61):
             conn.close()
     except Exception as ex:
         print(ex)
-
-
-# %%
-data[-1][1]
-
-# %%
