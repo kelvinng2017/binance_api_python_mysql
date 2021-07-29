@@ -12,7 +12,6 @@ import talib
 import btalib
 import numpy as np
 import matplotlib.pyplot as plt
-import mpl_finance as mpf
 import configparser
 pd.set_option('expand_frame_repr', False)
 starttime = datetime.now()

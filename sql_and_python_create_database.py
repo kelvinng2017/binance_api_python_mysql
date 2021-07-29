@@ -31,7 +31,7 @@ try:
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 刪除資料表指令
-        command = "create database tabel_name"
+        command = "create database binance_database"
 
         # 執行指令
         cursor.execute(command)

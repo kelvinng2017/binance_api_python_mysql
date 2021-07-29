@@ -103,13 +103,13 @@ datetime.now().microsecond
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings_for_high_hand_table_name)
+    conn = pymysql.connect(**db_settings)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 建立資料表指令
         for i in range(1):
-            sql = "CREATE TABLE tabel_name(table_name_id INT NOT NULL AUTO_INCREMENT, table_name NOT NULL ,PRIMARY KEY(table_name_id))"
+            sql = "CREATE TABLE symbol_data_table(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,PRIMARY KEY(symbol_id))"
             cursor.execute(sql)
         conn.commit()
         print("建立資料表成功")
@@ -141,15 +141,15 @@ print(now_time)
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings_for_high_hand)
+    conn = pymysql.connect(**db_settings_for_high_hand_table_name)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 建立資料表指令
-        command_create_datatable = "create  table %s(id Int(5),name VARCHAR(16))"
+        command_create_datatable = "create  table name_table(table_name_id INT(255) NOT NULL AUTO_INCREMENT,table_name VARCHAR(100) NOT NULL,PRIMARY KEY(table_name_id))"
 
         # 執行指令
-        cursor.execute(command_create_datatable, (now_time))
+        cursor.execute(command_create_datatable)
 
         print("建立資料表成功")
         conn.close()
