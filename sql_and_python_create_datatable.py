@@ -25,6 +25,14 @@ db_settings_for_high_hand = {
     "db": config['database_settings']['db_high_hand'],
     "charset": config['database_settings']['charset']
 }
+db_settings_for_high_hand_table_name = {
+    "host": config['database_settings']['host'],
+    "port": int(config['database_settings']['port']),
+    "user": config['database_settings']['user'],
+    "password": config['database_settings']['password'],
+    "db": config['database_settings']['db_high_hand_table_name'],
+    "charset": config['database_settings']['charset']
+}
 # %%
 try:
     # 建立Connection物件
@@ -95,17 +103,16 @@ datetime.now().microsecond
 # %%
 try:
     # 建立Connection物件
-    conn = pymysql.connect(**db_settings_for_high_hand)
+    conn = pymysql.connect(**db_settings_for_high_hand_table_name)
 
     # 建立Cursor物件
     with conn.cursor() as cursor:
         # 建立資料表指令
-        for i in range(5):
-            sql = "create  table `%s`(symbol_id INT NOT NULL AUTO_INCREMENT, symbol_name VARCHAR(100) NOT NULL ,high_hand_time VARCHAR(100) NOT NULL ,PRIMARY KEY(symbol_id))"
-            cursor.execute(sql, ["table"+str(datetime.now().year)+"-"+str(datetime.now().month)+"-" +
-                                 str(datetime.now().day)+" "+str(datetime.now().hour)+":"+str(datetime.now().minute)+":"+str(datetime.now().second)+"."+str(datetime.now().microsecond)])
+        for i in range(1):
+            sql = "CREATE TABLE tabel_name(table_name_id INT NOT NULL AUTO_INCREMENT, table_name NOT NULL ,PRIMARY KEY(table_name_id))"
+            cursor.execute(sql)
         conn.commit()
-        print("sql")
+        print("建立資料表成功")
         conn.close()
 except Exception as ex:
     print(ex)
