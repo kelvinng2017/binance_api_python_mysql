@@ -102,7 +102,8 @@ try:
         command = "INSERT INTO symbol_data_table(symbol_name)VALUES(%s)"
 
         # 執行指令
-        for need_usdt_price_symbol_numpy_index in need_usdt_price_symbol_numpy_out.values():
+        new_symbol = ['CLVUSDT', 'QNTUSDT']
+        for need_usdt_price_symbol_numpy_index in new_symbol:
             print(need_usdt_price_symbol_numpy_index)
             cursor.execute(command, (need_usdt_price_symbol_numpy_index))
         conn.commit()
